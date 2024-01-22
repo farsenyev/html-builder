@@ -18,11 +18,10 @@ fs.readdir(stylePath, (err, files)=>{
             else{
               styles.push(data)
               if (styles.length === counter){
-                styles.forEach(style => {
-                  fs.appendFile(`${projectPath}/bundle.css`, style, 'utf8', (err)=>{
+                const style = styles.join('\n')
+                  fs.writeFile(`${projectPath}/bundle.css`, style, 'utf8', (err)=>{
                     if (err) console.log(err)
                   })
-                })
               }
             }
           })
