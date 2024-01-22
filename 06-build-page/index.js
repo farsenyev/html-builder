@@ -58,20 +58,22 @@ async function buildCSS(){
 
 async function buildASSETS(rootDir, distDir){
   try {
-    await fs.access(rootDir)
+    // await fs.access(rootDir)
     await fs.mkdir(distDir)
     //create assets
     const filesAssets = await fs.readdir(rootDir);
 
     await Promise.all(filesAssets.map(async (assFile) => {
-      const statsAss = await fs.stat(rootDir + `${assFile}`);
-      const newRoot = path.join(rootDir, `/${assFile}`)
-      const newDist = path.join(distDir, `/${assFile}`);
+      const statsAss = await fs.stat(rootDir + `/${assFile}`);
+      const newRoot = path.join(rootDir, assFile);
+      console.log(assFile)
+      const newDist = path.join(distDir, assFile);
 
       if (statsAss.isFile()){
         const dataAss = await fs.readFile(newRoot, 'utf8');
         await fs.writeFile(newDist, dataAss, 'utf8')
       }else if (statsAss.isDirectory()){
+        // await fs.mkdir(newRoot)
         await buildASSETS(newRoot, newDist)
       }
     }));
